@@ -1,5 +1,26 @@
 from django import forms
-from .models import Instituicao, Setor
+from .models import Instituicao, Setor, Pessoa
+
+class PessoaForm(forms.ModelForm):
+    class Meta:
+        model = Pessoa
+        fields = ['nome', 'cpf', 'data_nascimento', 'telefone', 'email', 'cep']
+        labels = {
+            'nome':'Nome',
+            'cpf':'CPF',
+            'data_nascimento':'Data de Nascimento',
+            'telefone':'Telefone',
+            'email':'E-Mail',
+            'cep':'CEP'
+        }
+        widgets = {
+            'nome':forms.TextInput(attrs={'class':'form-control'}),
+            'cpf':forms.TextInput(attrs={'class':'form-control'}),
+            'data_nascimento':forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'telefone':forms.TextInput(attrs={'class':'form-control'}),
+            'email':forms.EmailInput(attrs={'class':'form-control', 'type':'email'}),
+            'cep':forms.TextInput(attrs={'class':'form-control'}),            
+        }
 
 
 class InstituicaoForm(forms.ModelForm):

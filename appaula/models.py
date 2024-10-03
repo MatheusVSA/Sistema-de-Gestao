@@ -22,7 +22,7 @@ class Setor(models.Model):
 class Pessoa(models.Model):
     nome = models.CharField(max_length=255)
     cpf = models.CharField(max_length=14, unique=True)
-    data_de_nascimento =models.DateField()
+    data_nascimento = models.DateField()
     telefone = models.CharField(max_length=20)
     email = models.EmailField(max_length=255)
     cep = models.CharField(max_length=10, null=True)

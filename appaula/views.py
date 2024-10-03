@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Instituicao
-from .forms import InstituicaoForm
+from .models import Instituicao, Setor, Pessoa
+from .forms import InstituicaoForm, SetorForm, PessoaForm
 
 #Metodo para abrir a página da Instituição para Novo cadastro ou Alteração de um existente
 def criar_instituicao(request, id=None):
@@ -51,6 +51,101 @@ def listar_instituicoes(request):
         'lista_instituicoes': lista_instituicoes,
         'instituicao': instituicao})
 
+#Metodo para abrir a página do setor para Novo cadastro ou Alteração de um existente
+def criar_setor(request, id=None):
+    # Se 'id' for fornecido, buscar o Setor específico, senão, criar um novo
+    setor = get_object_or_404(Setor, pk=id) if id else None
+    lista_setores = Setor.objects.all()
+
+    if request.method == "POST":
+        form = SetorForm(request.POST, instance=setor)
+        if form.is_valid():
+            form.save()
+            if setor:
+                messages.success(request, 'Setor atualizado com sucesso!')
+            else:
+                messages.success(request, 'Setor adicionado com sucesso!')
+
+            return redirect('listar_setores')  # Redirecionar para a view de listagem
+    else:
+        form = SetorForm(instance=setor)
+
+    return render(request, 'appaula/form_setor.html', {
+        'form': form,
+        'lista_setores': lista_setores,
+        'setor': setor
+    })
+
+# Método para excluir um setor existente
+def excluir_setor(request, id):
+    setor = get_object_or_404(Setor,pk=id)
+    setor.delete()
+    setor=None
+    lista_setores=Setor.objects.all()
+    form = SetorForm(instance=setor)
+    return render(request, 'appaula/form_setor.html', {
+        'form': form,
+        'lista_setores': lista_setores,
+        'setor': setor
+    })
+
+#Metodo para listar os setores cadastrados
+def listar_setores(request):
+    setor = None
+    lista_setores = Setor.objects.all()
+    form = SetorForm(instance=setor)
+    return render(request, 'appaula/form_setor.html', {
+        'form': form,
+        'lista_setores': lista_setores,
+        'setor': setor})
+
+# Metodo para cadastrar pessoas
+def cadastrar_pessoa(request, id=None):
+    # Se 'id' for fornecido, buscar o Setor específico, senão, criar um novo
+    pessoa = get_object_or_404(Pessoa, pk=id) if id else None
+    lista_pessoas = Pessoa.objects.all()
+
+    if request.method == "POST":
+        form = PessoaForm(request.POST, instance=pessoa)
+        if form.is_valid():
+            form.save()
+            if pessoa:
+                messages.success(request, 'Cadrastro atualizado com sucesso!')
+            else:
+                messages.success(request, 'Cadastro realizado com sucesso!')
+
+            return redirect('listar_pessoas')  # Redirecionar para a view de listagem
+    else:
+        form = PessoaForm(instance=pessoa)
+
+    return render(request, 'appaula/cadastro_pessoa.html', {
+        'form': form,
+        'lista_pessoas': lista_pessoas,
+        'pessoa': pessoa
+    })
+
+# Método para excluir o cadastro de uma pessoa
+def excluir_pessoa(request, id):
+    pessoa = get_object_or_404(Pessoa,pk=id)
+    pessoa.delete()
+    pessoa=None
+    lista_pessoas=Pessoa.objects.all()
+    form = PessoaForm(instance=pessoa)
+    return render(request, 'appaula/cadastro_pessoa.html', {
+        'form': form,
+        'lista_pessoas': lista_pessoas,
+        'pessoa': pessoa
+    })
+
+#Metodo para listar as pessoas cadastradas
+def listar_pessoas(request):
+    pessoa = None
+    lista_pessoas = Pessoa.objects.all()
+    form = PessoaForm(instance=pessoa)
+    return render(request, 'appaula/cadastro_pessoa.html', {
+        'form': form,
+        'lista_pessoas': lista_pessoas,
+        'pessoa': pessoa})
 
 # Create your views here.
 #chama a pagina index

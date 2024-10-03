@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %} Cadastro de Pessoas {% endblock %}
+{% block title %} Cadastro de Setores {% endblock %}
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container-sm"></div>
+<div class="container-sm">
     {%if messages %}
     <div>
         {% for massage in messages %}
@@ -19,14 +19,14 @@
 
     <div class="card">
         <div class="card-header">
-            Cadastrar pessoas
+            Cadastrar Setores
         </div>
         <div class="card-body">
             <form method="POST"
-            action="{% if pessoa.id %} 
-                         {% url 'editar_pessoa' pessoa.id %}
+            action="{% if setor.id %} 
+                         {% url 'editar_setor' setor.id %}
                     {% else %}
-                         {% url 'cadastrar_pessoa' %}
+                         {% url 'criar_setor' %}
                     {% endif %}">
                 {% csrf_token %}
                 <div class="mb-3">
@@ -34,34 +34,25 @@
                     {{ form.nome }}
                 </div>
                 <div class="mb-3">
-                    {{ form.cpf.label_tag }}
-                    {{ form.cpf }}
-                </div>
-                <div class="mb-3">
-                    {{ form.data_nascimento.label_tag }}
-                    {{ form.data_nascimento }}
-                </div>
-                <div class="mb-3">
-                    {{ form.telefone.label_tag }}
-                    {{ form.telefone }}
-                </div>
-                <div class="mb-3">
                     {{ form.email.label_tag }}
                     {{ form.email }}
                 </div>
                 <div class="mb-3">
-                    {{ form.cep.label_tag }}
-                    {{ form.cep }}
+                    {{ form.ramal.label_tag }}
+                    {{ form.ramal }}
                 </div>
-                <input type="hidden" id="{{pessoa.id}}">
+                <div class="mb-3">
+                    {{ form.instituicao.label_tag }}
+                    {{ form.instituicao }}
+                </div>
+                <input type="hidden" id="{{setor.id}}">
                 <button type="submit" class="btn btn-primary">Salvar</button>    
             </form>
         </div>
-    </div>           
-
-    <div class="card"></div>
+    </div>
+    <div class="card">
         <div class="card-header">
-            Lista de Pessoas
+            Lista de Setores
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -69,26 +60,22 @@
                     <thead>
                         <tr>
                             <td>#id</td>
-                            <td>Nome</td>
-                            <td>CPF</td>
-                            <td>Data de Nascimento</td>
-                            <td>Telefone</td>
-                            <td>E-mail</td>
-                            <td>CEP</td>
+                            <td>Setor</td>
+                            <td>Email</td>
+                            <td>Ramal</td>
+                            <td>Instituicão</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in lista_pessoas %}
+                        {% for i in lista_setores %}
                         <tr>
                             <td>{{i.id}}</td>
                             <td>{{i.nome}}</td>
-                            <td>{{i.cpf}}</td>
-                            <td>{{i.data_nascimento}}</td>
-                            <td>{{i.telefone}}</td>
                             <td>{{i.email}}</td>
-                            <td>{{i.cep}}</td>
-                            <td><a href="{% url 'editar_pessoa' i.id %}"  class="btn btn-primary">Alterar</a></td>
-                                <td><a href="{% url 'excluir_pessoa' i.id %}" class="btn btn-primary" onclick="confirmDelete(event, this);">Excluir</a></td>
+                            <td>{{i.ramal}}</td>
+                            <td>{{i.instituicao}}</td>
+                            <td><a href="{% url 'editar_setor' i.id %}"  class="btn btn-primary">Alterar</a></td>
+                                <td><a href="{% url 'excluir_setor' i.id %}" class="btn btn-primary" onclick="confirmDelete(event, this);">Excluir</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -102,7 +89,7 @@
         event.preventDefault();  // Impede o link de ser seguido imediatamente
         Swal.fire({
             title: 'Tem certeza?',
-            text: "Você não poderá desfazer esta ação! Lembre-se caso tenha lotações cadastradas estes serão excluidos também!",
+            text: "Você não poderá desfazer esta ação! Lembre-se caso tenha setores cadastrados estes serão excluidos também!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -115,5 +102,5 @@
             }
         })
     }
-</script>
+    </script>
 {% endblock %}
