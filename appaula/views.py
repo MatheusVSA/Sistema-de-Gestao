@@ -137,7 +137,16 @@ def excluir_pessoa(request, id):
         'pessoa': pessoa
     })
 
-
+#Metodo para listar as pessoas cadastradas
+def listar_pessoas(request):
+    pessoa = None
+    lista_pessoas = Pessoa.objects.all()
+    form = PessoaForm(instance=pessoa)
+    return render(request, 'appaula/cadastro_pessoa.html', {
+        'form': form,
+        'lista_pessoas': lista_pessoas,
+        'pessoa': pessoa
+    })
 
 #Metodo para criar lotação
 def criar_lotacao(request, id=None):
