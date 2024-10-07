@@ -1,5 +1,5 @@
 from django import forms
-from .models import Instituicao, Setor, Pessoa
+from .models import Instituicao, Setor, Pessoa, Lotacao
 
 class PessoaForm(forms.ModelForm):
     class Meta:
@@ -59,4 +59,24 @@ class SetorForm(forms.ModelForm):
             'email':forms.EmailInput(attrs={'class':'form-control'}),
             'ramal':forms.TextInput(attrs={'class':'form-control'}),
             'instituicao':forms.Select(attrs={'class':'form-control'}),            
+        }
+
+class LotacaoForm(forms.ModelForm):
+    class Meta:
+        model = Lotacao
+        fields = ['pessoa', 'setor', 'data_entrada', 'data_saida', 'situacao']
+        labels = {
+            'pessoa':'Nome',
+            'setor':'Setor',
+            'data_entrada': 'Data de Entrada',
+            'data_saida':'Data de Saída',
+            'situacao':'Situação',
+        }
+        widgets = {
+            'pessoa':forms.Select(attrs={'class':'form-control'}),
+            'setor':forms.Select(attrs={'class':'form-control'}),
+            'data_entrada':forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'data_saida':forms.DateInput(attrs={'class':'form-control', 'type':'date'}),
+            'situacao':forms.Select(attrs={'class':'form-control', 'type':'number'}),
+            
         }

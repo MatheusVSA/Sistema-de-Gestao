@@ -24,4 +24,11 @@ urlpatterns = [
     path('setor/excluir/<int:id>/', views.excluir_setor, name='excluir_setor'),
     path('setores/', views.listar_setores, name='listar_setores'),
 
+    # URLs para Lotação 
+    path('lotacao/novo', views.criar_lotacao, name='criar_lotacao'),
+    path('lotacao/alterar/<int:id>/', views.criar_lotacao, name='editar_lotacao'),
+    path('lotacao/excluir/<int:id>/', views.excluir_lotacao, name='excluir_lotacao'),
+    path('lotacoes/', views.listar_lotacoes, name='listar_lotacoes'),
+
+
 ]

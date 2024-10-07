@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Instituicao, Setor, Pessoa
-from .forms import InstituicaoForm, SetorForm, PessoaForm
+from .models import Instituicao, Setor, Pessoa, Lotacao
+from .forms import InstituicaoForm, SetorForm, PessoaForm, LotacaoForm
 
 #Metodo para abrir a página da Instituição para Novo cadastro ou Alteração de um existente
 def criar_instituicao(request, id=None):
@@ -137,15 +137,56 @@ def excluir_pessoa(request, id):
         'pessoa': pessoa
     })
 
-#Metodo para listar as pessoas cadastradas
-def listar_pessoas(request):
-    pessoa = None
-    lista_pessoas = Pessoa.objects.all()
-    form = PessoaForm(instance=pessoa)
-    return render(request, 'appaula/cadastro_pessoa.html', {
+
+
+#Metodo para criar lotação
+def criar_lotacao(request, id=None):
+    # Se 'id' for fornecido, buscar o Setor específico, senão, criar um novo
+    lotacao = get_object_or_404(Lotacao, pk=id) if id else None
+    lista_lotacao = Lotacao.objects.all()
+
+    if request.method == "POST":
+        form = LotacaoForm(request.POST, instance=lotacao)
+        if form.is_valid():
+            form.save()
+            if lotacao:
+                messages.success(request, 'Lotação atualizada com sucesso!')
+            else:
+                messages.success(request, 'Lotação realizada com sucesso!')
+
+            return redirect('listar_lotacoes')  # Redirecionar para a view de listagem
+    else:
+        form = LotacaoForm(instance=lotacao)
+
+    return render(request, 'appaula/form_lotacao.html', {
         'form': form,
-        'lista_pessoas': lista_pessoas,
-        'pessoa': pessoa})
+        'lista_lotacao': lista_lotacao,
+        'lotacao': lotacao
+    })
+
+# Metodo para excluir lotações 
+def excluir_lotacao(request, id):
+    lotacao = get_object_or_404(Lotacao, pk=id)
+    lotacao.delete()
+    lotacao = None
+    lista_lotacao = Lotacao.objects.all()
+    form = LotacaoForm(instance=lotacao)
+    return render(request, 'appaula/form_lotacao.html', {
+        'form': form,
+        'lista_lotacao': lista_lotacao,
+        'lotacao': lotacao,
+    })
+
+# Metodo para listar as lotações 
+def listar_lotacoes(request):
+    lotacao = None
+    lista_lotacao = Lotacao.objects.all()
+    form = LotacaoForm(instance=lotacao)
+    return render(request, 'appaula/form_lotacao.html', {
+        'form': form,
+        'lista_lotacao': lista_lotacao,
+        'lotacao': lotacao 
+    })
 
 # Create your views here.
 #chama a pagina index

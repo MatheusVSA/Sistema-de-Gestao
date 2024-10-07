@@ -31,11 +31,18 @@ class Pessoa(models.Model):
         return self.nome
 
 class Lotacao(models.Model):
+   SITUACAO_CHOISEs = [
+       (1, 'Ativo'),
+       (2, 'Inativo'),
+       (3, 'Afastado'),
+       (4, 'Transferido')
+   ]
+       
    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE)     
    setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
    data_entrada=models.DateField()
    data_saida = models.DateField(null=True, blank=True)
-   situacao = models.IntegerField()
+   situacao = models.IntegerField(choices=SITUACAO_CHOISEs)
    
    def __str__(self):
        return f"{self.pessoa.nome} - {self.setor.nome}"
